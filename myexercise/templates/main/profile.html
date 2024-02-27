@@ -1,0 +1,8 @@
+{% extends "main/base_generic.html" %}
+
+{% block content %}
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">выйти</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,9 @@
+asgiref==3.7.2
+Django==5.0.2
+django-appconf==1.0.6
+django-user-accounts==3.3.2
+django-utils-six==2.0
+pytz==2024.1
+six==1.16.0
+sqlparse==0.4.4
+typing_extensions==4.9.0
