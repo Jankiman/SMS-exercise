@@ -1,0 +1,8 @@
+{% extends "main/base_generic.html" %}
+
+{% block content %}
+    <p>This record can see anybody!</p>
+{% if perms.main.viewsite %}
+    <p>This record can see only admin!</p>
+{% endif %}
+{% endblock %}

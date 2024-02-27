@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from .views import ProfileView, UserRegisterView, EmailConfirmationSentView, EmailConfirmedView, \
-    EmailConfirmationFailedView, UserConfirmEmailView
+    EmailConfirmationFailedView, UserConfirmEmailView, PageView
 
 app_name = "main"
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path('confirm-email/<str:uidb64>/<str:token>/', UserConfirmEmailView.as_view(), name='confirm_email'),
     path('email-confirmed/', EmailConfirmedView.as_view(), name='email_confirmed'),
     path('confirm-email-failed/', EmailConfirmationFailedView.as_view(), name='email_confirmation_failed'),
+    path('page/', PageView.as_view(), name='page')
 ]

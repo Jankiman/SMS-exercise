@@ -1,8 +1,9 @@
+from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.views import View
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, ListView
 from django.urls import reverse_lazy
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -15,8 +16,12 @@ from .forms import UserRegisterForm
 from .mixins import UserIsNotAuthenticated
 
 
-class ProfileView(LoginRequiredMixin, TemplateView):
+class ProfileView(LoginRequiredMixin, ListView):
     template_name = "main/profile.html"
+    queryset = User.objects.all()
+
+class PageView(TemplateView):
+    template_name = "main/page.html"
 
 class UserRegisterView(UserIsNotAuthenticated, CreateView):
     form_class = UserRegisterForm
@@ -35,12 +40,12 @@ class UserRegisterView(UserIsNotAuthenticated, CreateView):
         # Функционал для отправки письма и генерации токена
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
-        activation_url = reverse_lazy('confirm_email', kwargs={'uidb64': uid, 'token': token})
+        activation_url = reverse_lazy('main:confirm_email', kwargs={'uidb64': uid, 'token': token}) # указывай полный путь до шаблона
         current_site = Site.objects.get_current().domain
         send_mail(
             'Подтвердите свой электронный адрес',
             f'Пожалуйста, перейдите по следующей ссылке, чтобы подтвердить свой адрес электронной почты: http://{current_site}{activation_url}',
-            'service.notehunter@gmail.com',
+            settings.EMAIL_HOST_USER,
             [user.email],
             fail_silently=False,
         )
